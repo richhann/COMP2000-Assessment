@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Item implements ItemInterface {
     private ItemDefinition definition;
-    private List<ItemInterface> components = new ArrayList<>(); // * */
+    private List<ItemInterface> components; // * */
 
     public void addComponent(ItemInterface component) {
         components.add(component);
@@ -23,8 +24,22 @@ public class Item implements ItemInterface {
      * @param def
      */
     public Item(ItemDefinition def) {
-        definition = def;
+        this.definition = def;
+        this.components = new ArrayList<>();
+
+      // Check if the item is craftable
+    if (!def.isBaseItemDef()) {
+        // Retrieve component items from ItemDictionary or wherever you store your items
+        String[] componentNames = def.componentsString().split(", ");
+        for (String componentName : componentNames) {
+            Optional<ItemDefinition> componentDef = ItemDictionary.get().defByName(componentName);
+            if (componentDef.isPresent()) {
+                ItemInterface componentItem = new Item(componentDef.get());
+                addComponent(componentItem);
+            }
+        }
     }
+} 
 
     @Override
     public double getWeight() {
@@ -60,11 +75,14 @@ public class Item implements ItemInterface {
         // When a non-empty String is returned, the uncraft button will appear in the
         // UI.
 
-        String description = "";
+        StringBuilder description = new StringBuilder();
         for (ItemInterface component : components) {
-            description += component.getName() + "\n";  // * STRING added */
+            if (description.length() > 0) {
+                description.append(", ");
+            }
+            description.append(component.getName());
         }
-        return description;
+        return description.toString();
     }
 
     @Override

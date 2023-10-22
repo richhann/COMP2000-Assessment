@@ -33,14 +33,8 @@ public class Inventory {
     }
 
     public ItemInterface remove(ItemInterface item) throws ItemNotAvailableException {
-        // Check if the provided item exists in the players inventory
-        Optional<Integer> removeFromIdx = Optional.empty();
-        for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i) == item) {
-                removeFromIdx = Optional.of(i);
-                break;
-            }
-        }
+        // Check if the provided item exists in the players inventory based on its definition
+        Optional<Integer> removeFromIdx = indexOfItemByName(item.getDefinition());
         if (removeFromIdx.isEmpty()) {
             throw new ItemNotAvailableException(item.getDefinition());
         }
@@ -85,7 +79,7 @@ public class Inventory {
      */
     public ArrayList<ItemInterface> searchItems(String searchTerm) {
         String term = searchTerm.toLowerCase();
-        ArrayList<ItemInterface> result = new ArrayList<>(stock);  // ArrayList copy
+        ArrayList<ItemInterface> result = new ArrayList<>(stock);  //** */ ArrayList copy
 
         if (searchBy.equals("All")) {
             for (int i = 0; i < result.size(); i++) {

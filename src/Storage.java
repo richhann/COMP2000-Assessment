@@ -47,7 +47,7 @@ public class Storage implements Observable {
 
     public ItemInterface retrieve(ItemInterface item) throws ItemNotAvailableException {
         ItemInterface removed = items.remove(item);
-        lastAction = "Removed: " + item.getName();
+        lastAction = "Retrieved: " + item.getName();
         notifyObservers();
         return removed;
     }

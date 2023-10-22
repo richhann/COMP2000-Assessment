@@ -5,24 +5,28 @@ public class Player implements Observer {
     private Inventory storageView;
 
     public void craft(Item craftableItem) throws ItemNotAvailableException {
-        // Check if all components are available in the player's inventory *****
+        // Debug: Print the number of components the craftableItem has
+        System.out.println("Number of components for " + craftableItem.getName() + ": " + craftableItem.getComponents().size()); // * BUG HERE... craftableItem has no components */... maybe because Mace has not been created... 
+    
+        // Check if all components are available in the player's inventory
         for (ItemInterface component : craftableItem.getComponents()) {
-            if (!inventory.searchItems("").contains(component)) {
+            if (inventory.searchItems(component.getName()) == null) { //* search */
                 System.out.println("Missing component: " + component.getName());
                 return;
             }
         }
         
-        // Remove components from the player's inventory ********
+        // Remove components from the player's inventory
         for (ItemInterface component : craftableItem.getComponents()) {
+            System.out.println("Attempting to remove component: " + component.getName());
             inventory.remove(component);
+            System.out.println("Component removed: " + component.getName());
         }
-
-        // Add the crafted item to the player's inventory *********
+    
+        // Add the crafted item to the player's inventory
         inventory.addOne(craftableItem);
         System.out.println(name + ", Crafted: " + craftableItem.getName());
     }
-
     public void uncraft(Item craftableItem) throws ItemNotAvailableException {
         if (!inventory.searchItems("").contains(craftableItem)) {
             System.out.println("Item not in inventory: " + craftableItem.getName());
