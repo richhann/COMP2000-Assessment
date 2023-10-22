@@ -1,8 +1,9 @@
-public class Player {
+public class Player implements Observer {
     private String name;
     private Inventory inventory;
     private double carryWeightCapacity;
     private Inventory storageView;
+
 
     public Player(String playerName, double carryCapacity, Inventory sInventory) {
         name = playerName;
@@ -55,6 +56,11 @@ public class Player {
             throw new ExceedWeightCapacity(this, item);
         }
         inventory.addOne(storage.retrieve(item));
+    }
+
+    @Override
+    public void update(String message) { //** */
+        System.out.println(name + ", " + message);
     }
     
 }

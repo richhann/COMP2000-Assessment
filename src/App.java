@@ -9,6 +9,9 @@ public class App {
     public App(Player p, Storage s) {
         player = p;
         storage = s;
+
+        storage.addObserver(player); //* */ Add player as an observer to the storage*
+
         player.setStorageView(storage.getInventory());
 
         manager = new PageManager(player, storage);
