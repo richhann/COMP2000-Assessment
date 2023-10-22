@@ -4,6 +4,40 @@ public class Player implements Observer {
     private double carryWeightCapacity;
     private Inventory storageView;
 
+    public void craft(Item craftableItem) throws ItemNotAvailableException {
+        // Check if all components are available in the player's inventory *****
+        for (ItemInterface component : craftableItem.getComponents()) {
+            if (!inventory.searchItems("").contains(component)) {
+                System.out.println("Missing component: " + component.getName());
+                return;
+            }
+        }
+        
+        // Remove components from the player's inventory ********
+        for (ItemInterface component : craftableItem.getComponents()) {
+            inventory.remove(component);
+        }
+
+        // Add the crafted item to the player's inventory *********
+        inventory.addOne(craftableItem);
+        System.out.println(name + ", Crafted: " + craftableItem.getName());
+    }
+
+    public void uncraft(Item craftableItem) throws ItemNotAvailableException {
+        if (!inventory.searchItems("").contains(craftableItem)) {
+            System.out.println("Item not in inventory: " + craftableItem.getName());
+            return;
+        }
+
+        // Remove the craftable item from the player's inventory
+        inventory.remove(craftableItem);
+
+        // Add the components of the craftable item back to the player's inventory
+        for (ItemInterface component : craftableItem.getComponents()) {
+            inventory.addOne(component);
+        }
+        System.out.println(name + ", Uncrafted: " + craftableItem.getName());
+    }
 
     public Player(String playerName, double carryCapacity, Inventory sInventory) {
         name = playerName;
@@ -59,8 +93,8 @@ public class Player implements Observer {
     }
 
     @Override
-    public void update(String message) { //** */
+    public void update(String message) { // ** */
         System.out.println(name + ", " + message);
     }
-    
+
 }

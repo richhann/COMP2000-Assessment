@@ -1,10 +1,25 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Item implements ItemInterface {
     private ItemDefinition definition;
+    private List<ItemInterface> components = new ArrayList<>(); // * */
+
+    public void addComponent(ItemInterface component) {
+        components.add(component);
+    }
+
+    public List<ItemInterface> getComponents() {
+        return components;
+    }
 
     /**
      * Creates an Item instance with a set definition.
-     * The composition list is (created but) left empty. For composite items, the sub-components
-     * should be retrieved/removed from some item source, and added with Item::Add(ItemInterface).
+     * The composition list is (created but) left empty. For composite items, the
+     * sub-components
+     * should be retrieved/removed from some item source, and added with
+     * Item::Add(ItemInterface).
+     * 
      * @param def
      */
     public Item(ItemDefinition def) {
@@ -15,6 +30,10 @@ public class Item implements ItemInterface {
     public double getWeight() {
         double weight = definition.getWeight().orElse(0.0);
         // If the item is made up of other items, we should find the sum of weights
+        for (ItemInterface component : components) {
+            weight += component.getWeight(); // * array LOOP */
+        }
+
         return weight;
     }
 
@@ -35,10 +54,17 @@ public class Item implements ItemInterface {
 
     @Override
     public String getCompositionDescription() {
-        // For craftable items, this method should return a description describing/listing the
+        // For craftable items, this method should return a description
+        // describing/listing the
         // other items which make up this item.
-        // When a non-empty String is returned, the uncraft button will appear in the UI.
-        return "";
+        // When a non-empty String is returned, the uncraft button will appear in the
+        // UI.
+
+        String description = "";
+        for (ItemInterface component : components) {
+            description += component.getName() + "\n";  // * STRING added */
+        }
+        return description;
     }
 
     @Override
@@ -54,7 +80,7 @@ public class Item implements ItemInterface {
     @Override
     public String toString() {
         String output = String.format("Item: %s\nDescription: %s\nWeight: %.2f",
-            getName(), getDescription(), getWeight());
+                getName(), getDescription(), getWeight());
         output += "\nHashCode: " + Integer.toHexString(this.hashCode());
         return output;
     }

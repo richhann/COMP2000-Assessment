@@ -53,10 +53,19 @@ public class App {
     }
 
     void setupCrafting(ItemCraftPage page, Player player) {
-        page.setCraftAction((def) -> System.out.println("Crafting not implemented"));
+        page.setCraftAction((def) -> {    //*CHANGED LAMBDA FUNCTION */
+            Item craftableItem = new Item(def);
+            player.craft(craftableItem);
+        });
     }
 
-    void setupUncrafting(ProductPage page, Player player) {
-        page.setUncraftAction((item) -> System.out.println("Uncrafting not implemented"));
+    void setupUncrafting(ProductPage page, Player player) {   //* Changed LAMBDA function */
+        page.setUncraftAction((item) -> {
+            if (item instanceof Item) {
+                player.uncraft((Item) item);
+            } else {
+                System.out.println("Item is not craftable.");
+            }
+        });
     }
 }
