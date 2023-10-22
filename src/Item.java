@@ -1,60 +1,62 @@
-import java.util.Optional;
-
 public class Item implements ItemInterface {
+    private ItemDefinition definition;
 
-    private String name;
-    private String description;
-    private double value;
-    private Optional<Integer> expiry;
-
-    public Item(String n, String desc, double val, Optional<Integer> exp) {
-        name = n;
-        description = desc;
-        value = val;
-        expiry = exp;
+    /**
+     * Creates an Item instance with a set definition.
+     * The composition list is (created but) left empty. For composite items, the sub-components
+     * should be retrieved/removed from some item source, and added with Item::Add(ItemInterface).
+     * @param def
+     */
+    public Item(ItemDefinition def) {
+        definition = def;
     }
 
     @Override
-    public InventoryTableRow getInventoryTableRow() {
-        return new InventoryTableRow(getName(), getDesc(), getValue() + "", getExpiryString());
+    public double getWeight() {
+        double weight = definition.getWeight().orElse(0.0);
+        // If the item is made up of other items, we should find the sum of weights
+        return weight;
     }
 
     @Override
-    public CartTableRow getCartRow(String column3) {
-        return new CartTableRow(getName(), getValue() + "", column3);
-    }
-
     public String getName() {
-        return name;
+        return definition.getName();
     }
 
-    public String getDesc() {
-        return description;
+    @Override
+    public String getDescription() {
+        return definition.getDescription();
     }
 
-    public double getValue() {
-        // if (expiry.isEmpty() || expiry.get() > 0) {
-        //     return value;
-        // }
-        // return 0;
-
-        return value;
+    @Override
+    public ItemDefinition getDefinition() {
+        return definition;
     }
 
-    public Optional<Integer> getExpiry() {
-        return expiry;
+    @Override
+    public String getCompositionDescription() {
+        // For craftable items, this method should return a description describing/listing the
+        // other items which make up this item.
+        // When a non-empty String is returned, the uncraft button will appear in the UI.
+        return "";
     }
 
-    public String getExpiryString() {
-        if (expiry.isPresent()) {
-            if (expiry.get() == 0) {
-                return "Expired";
-            } else {
-                return "Expires in " + expiry.get();
-            }
-        } else {
-            return "Does not expire";
-        }
+    @Override
+    public boolean equals(ItemInterface other) {
+        return isOf(other.getDefinition());
     }
-    
+
+    @Override
+    public boolean isOf(ItemDefinition def) {
+        return getName().equals(def.getName());
+    }
+
+    @Override
+    public String toString() {
+        String output = String.format("Item: %s\nDescription: %s\nWeight: %.2f",
+            getName(), getDescription(), getWeight());
+        output += "\nHashCode: " + Integer.toHexString(this.hashCode());
+        return output;
+    }
+
 }

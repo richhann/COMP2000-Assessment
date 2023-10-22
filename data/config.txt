@@ -1,5 +1,18 @@
+- base items
+tomato, red and round, 0.5
+wand, a magic wand!, 0.35
+rock, rock :D, 0.4
+
+- craftable items
+magical mace, a wand with a rock on one end, wand, rock
+
 - store
-Store name, 1, Tomato, Red and round, 15.0, 123, 1, Tomato, Red and round, 15.0, 321, 1, Wand, A magic wand!, 100.0, 
+The stash
+tomato, 2
+wand, 2
 
 - player
-45.5, 1, Wand, A magic wand!, 100.0, , 2, Rock, Rock :D, 5.0, , 1, Tomato, Red and round, 15.0, 0
+2.0
+magical mace, 1
+rock, 2
+wand, 1
