@@ -1,0 +1,5 @@
+- store
+Store name, 1, Tomato, Red and round, 15.0, 123, 1, Tomato, Red and round, 15.0, 321, 1, Wand, A magic wand!, 100.0, 
+
+- player
+45.5, 1, Wand, A magic wand!, 100.0, , 2, Rock, Rock :D, 5.0, , 1, Tomato, Red and round, 15.0, 0
