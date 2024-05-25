@@ -16,7 +16,7 @@ The code is in a *separate* repository from the weekly exercises:
 
 __You should start from the repository branch tagged as "milestone1".__
 
-## Prompt
+## Scenario
 
 An indie games company, LART Studios, is in the process of developing a standard set of tools and features of their future games. Fred, who was obsessed with inheritance and object oriented design was put in charge of developing an inventory system. Fred went overboard with inheritance and was fired for creating a such a rigid system, and the company has outsourced the inventory system to you. You have been provided with Fred's last known bit of work, and a basic user interface to allow you to play with it.
 
